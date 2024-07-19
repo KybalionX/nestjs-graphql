@@ -16,4 +16,4 @@ jobs:
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag graph-nest:0.0.1
       - name: Deploy to DockerHub
-        run: docker push blackmagex/nest-graphql:latest
+        run: docker push blackmagex/nest-graphql:0.0.1
