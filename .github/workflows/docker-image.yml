@@ -14,6 +14,6 @@ jobs:
           docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
           echo "${{secrets.DOCKER_HUB_USERNAME}}/nest-graphql:latest"
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag graph-nest:0.0.1
+        run: docker build . --file Dockerfile --tag nest-graphql:0.0.1
       - name: Deploy to DockerHub
         run: docker push blackmagex/nest-graphql:0.0.1
