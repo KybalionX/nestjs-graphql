@@ -6,15 +6,9 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-      - name: DockerHub Login
-        run: docker login hub.docker.com -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag graph-nest:0.0.1
-      - name: Deploy to DockerHub
-        run: docker push ${{ secrets.DOCKER_HUB_USERNAME }}/${{secrets.DOCKER_HUB_REPOSITORY_NAME}}:latest
+      - uses: actions/checkout@v3
+      - name: show something
+        run: |
+          echo "hello Github!" 
