@@ -10,7 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: DockerHub Login
-        run: docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+        run: |
+          docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+          echo "${{secrets.DOCKER_HUB_USERNAME}}/nest-graphql:latest"
       - name: Build the Docker image
         run: docker build . --file Dockerfile --tag graph-nest:0.0.1
       - name: Deploy to DockerHub
