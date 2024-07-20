@@ -9,11 +9,34 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Git semantic version
+        id: version
+        uses: paulhatch/semantic-version@v4.0.2
+        with:
+          # The prefix to use to identify tags
+          tag_prefix: "v"
+          # A string which, if present in a git commit, indicates that a change represents a
+          # major (breaking) change, supports regular expressions wrapped with '/'
+          major_pattern: "[MAJOR]"
+          # Same as above except indicating a minor change, supports regular expressions wrapped with '/'
+          minor_pattern: "[FEAT]"
+          # A string to determine the format of the version output
+          format: "${major}.${minor}.${patch}-release${increment}"
+
       - name: DockerHub Login
         run: |
           docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} -p ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
           echo "${{secrets.DOCKER_HUB_USERNAME}}/nest-graphql:latest"
+
       - name: Build the Docker image
-        run: docker build . --file Dockerfile --tag blackmagex/nest-graphql:0.0.1
+        env:
+          NEW_VERSION: ${{steps.version.outputs.version}}
+        run: docker build . --file Dockerfile --tag blackmagex/nest-graphql:$NEW_VERSION
+        
       - name: Deploy to DockerHub
-        run: docker push blackmagex/nest-graphql:0.0.1
+        env:
+          NEW_VERSION: ${{steps.version.outputs.version}}
+        run: docker push blackmagex/nest-graphql:$NEW_VERSION
