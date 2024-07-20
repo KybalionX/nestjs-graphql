@@ -34,9 +34,13 @@ jobs:
       - name: Build the Docker image
         env:
           NEW_VERSION: ${{steps.version.outputs.version}}
-        run: docker build . --file Dockerfile --tag blackmagex/nest-graphql:$NEW_VERSION
+        run: |
+          docker build . --file Dockerfile --tag blackmagex/nest-graphql:$NEW_VERSION
+          docker build . --file Dockerfile --tag blackmagex/nest-graphql:latest
         
       - name: Deploy to DockerHub
         env:
           NEW_VERSION: ${{steps.version.outputs.version}}
-        run: docker push blackmagex/nest-graphql:$NEW_VERSION
+        run: |
+          docker push blackmagex/nest-graphql:$NEW_VERSION
+          docker push blackmagex/nest-graphql:latest
